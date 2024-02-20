@@ -1,0 +1,91 @@
+@font-face {
+    font-family: 'Akira';
+    src: url('./Akira Expanded Demo.otf') format('opentype'); 
+  }
+
+  @font-face {
+    font-family: 'Zeniq';
+    src: url('./Zeniq.otf') format('opentype');
+     }
+
+  h1{
+    font-family: 'Zeniq', sans-serif;
+    /*font-family: 'Bungee', sans-serif;*/
+   /*font-family: 'Titan One', sans-serif;*/
+   font-size: 80px;
+   text-align: center;
+   margin-bottom: 0%;
+   color: white;
+}
+
+h2{
+    font-family: 'Akira', sans-serif;
+    /*font-family: 'Itim', cursive;*/
+    font-size: 20px;
+    text-align: center;
+    margin-top: 0%;
+    color: white;
+}
+
+.headline{
+    padding-top: 10px;
+    float: left;
+}
+
+
+.text-box {
+    display: flex;
+    flex-direction: column; /* Align items in a column */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    text-align: center;
+    background-color: #EFEFEF;
+    height: 140px;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 700px;
+    border: 1px ;
+    box-shadow: 5px 5px 10px;
+    border-radius: 15px;
+}
+    
+input{
+
+    width: 450px;
+    height: 40px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'Itim', cursive;
+    background-color: white;
+    border-radius: 15px;
+}
+
+#background-box{
+    color: white;
+    width: 100%;
+    height: 50%;
+}
+
+button{
+    /*font-family: 'Akira', sans-serif;
+    font-size: 10px;*/
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;  /*occupies the whole screen*/
+    margin: 0;
+    font-family: 'Bungee', sans-serif;
+    /*background: linear-gradient(to bottom, #27374D 70%, #EEF0E5 25%);*/ /* Use a gradient for the split effect */
+    background: linear-gradient(to bottom, #4823ea 70%, #F7F7F7 25%);
+}
+
+footer{
+    color: black;
+    font-family: 'Itim', cursive;
+    position: absolute;
+    bottom: 10px;    
+    left: 80%;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Shadows+Into+Light&family=Titan+One&display=swap" rel="stylesheet">
+    
+    <title>PhishCheck Pro</title>
+</head>
+
+<body>
+    <div class="headline">
+        <h1>PhishCheck Pro</h1>  
+        <h2>Your Ultimate Defense Against Phishing Threats</h2>
+    </div>
+    <!--<form> element is used to create an HTML form that allows users to input data -->
+    <form action="/check_phishing" method="post" class="text-box">
+        <input type="text" placeholder="Enter URL" name="url" required>
+        <button type="submit">Check Now!</button>
+    </form>
+
+    <p id="result"></p> 
+    <footer>© Noy Robinson & Ofir Binshtok</footer>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(event){
+        event.preventDefault();
+        const url = document.querySelector('input[name="url"]').value;
+        const response = await fetch('/check_phishing', {method: 'POST', 
+            headers: {'Content-Type': 'application/x-www-form-urlencoded', }, 
+            body: `url=${encodeURIComponent(url)}`,
+    });
+        const data = await response.json();
+        const positives_count = data['positive detections for the scanned URL'];
+        document.getElementById('result').innerHTML = `Number of positives: ${positives_count}`;
+        
+    });
+    </script>
+<!-- const output = await response.text();
+        document.getElementById('output').innerHTML = output;-->
+    
+ 
+</body>
+</html>
