@@ -7,6 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Shadows+Into+Light&family=Titan+One&display=swap" rel="stylesheet">
+     <!-- Include SweetAlert2 CSS -->
+     <link rel="stylesheet" href="{{ url_for('static', filename='sweetalert2.min.css') }}">
+
+     <!-- Include SweetAlert2 JS -->
+     <script src="{{ url_for('static', filename='sweetalert2.all.min.js') }}"></script>
     
     <title>PhishCheck Pro</title>
 </head>
@@ -19,29 +24,49 @@
     <!--<form> element is used to create an HTML form that allows users to input data -->
     <form action="/check_phishing" method="post" class="text-box">
         <input type="text" placeholder="Enter URL" name="url" required>
-        <button type="submit">Check Now!</button>
+       <!--<button type="submit">Check Now!</button> --> 
+       <button onclick="myFunction()">Try it</button>
     </form>
 
-    <p id="result"></p> 
+    <p id="result"></p>
+    <div id= "result-container" style="display: none;">
+        <div id = "result-content"></div>
+    </div> 
+
     <footer>© Noy Robinson & Ofir Binshtok</footer>
 
-    <script>
-        document.querySelector('form').addEventListener('submit', async function(event){
-        event.preventDefault();
-        const url = document.querySelector('input[name="url"]').value;
-        const response = await fetch('/check_phishing', {method: 'POST', 
-            headers: {'Content-Type': 'application/x-www-form-urlencoded', }, 
-            body: `url=${encodeURIComponent(url)}`,
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+   
+   <script>
+    function myFunction() {
+    document.querySelector('form').addEventListener('submit', async function(event){
+    event.preventDefault();
+    const url = document.querySelector('input[name="url"]').value;
+    const response = await fetch('/check_phishing', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body:`url=${encodeURIComponent(url)}`,
     });
-        const data = await response.json();
-        const positives_count = data['positive detections for the scanned URL'];
-        document.getElementById('result').innerHTML = `Number of positives: ${positives_count}`;
-        
+    const data = await response.json();
+    const positives_count = data['positive detections for the scanned URL'];
+  
+    if(positives_count > 0)
+        Swal.fire({ title: "mallicious!",
+        text: "do not use this URL!",
+        icon: "warning"
+        });
+    else 
+        Swal.fire({ title: "safe!",
+        text: "you can browse safley!",
+        icon: "success"
+        });
+        swal("safe!", "you can browse safley", "success");
     });
-    </script>
-<!-- const output = await response.text();
-        document.getElementById('output').innerHTML = output;-->
-    
  
+    }
+    </script>
+  <!--document.getElementById('result').innerHTML = `Number of positives: ${positives_count}`;-->
 </body>
 </html>

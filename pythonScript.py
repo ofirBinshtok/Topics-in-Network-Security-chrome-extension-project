@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+from requests.exceptions import RequestException
 
 api_key = '2d4bdbc3b275e3c5d709a00fbdae114851cf26e8a48ea073e71d8c170ac2a27e'
 
@@ -19,33 +20,31 @@ def check_phishing():
 def scan_url(api_key, url):
     url_scan_endpoint = 'https://www.virustotal.com/vtapi/v2/url/scan'
     url_report_endpoint = 'https://www.virustotal.com/vtapi/v2/url/report'
+    try:
+        # Step 1: Submit URL for scanning
+        params_scan = {'apikey': api_key, 'url': url}
+        response_scan = requests.post(url_scan_endpoint, params=params_scan)
+        response_scan.raise_for_status()  # Raise an HTTPError for bad responses
 
-    # Step 1: Submit URL for scanning
-    params_scan = {'apikey': api_key, 'url': url}
-    response_scan = requests.post(url_scan_endpoint, params=params_scan)
+        # Get the scan result and resource for further report retrieval
+        scan_result = response_scan.json()
+        resource = scan_result.get('scan_id', '')
 
-    # Get the scan result and resource for further report retrieval
-    scan_result = response_scan.json()
-    resource = scan_result.get('scan_id', '')
+        # Step 2: Retrieve the scan report
+        params_report = {'apikey': api_key, 'resource': resource}
+        response_report = requests.get(url_report_endpoint, params=params_report)
+        response_report.raise_for_status()  # Raise an HTTPError for bad responses
 
-    # Step 2: Retrieve the scan report
-    params_report = {'apikey': api_key, 'resource': resource}
-    response_report = requests.get(url_report_endpoint, params=params_report)
+        # Extract the scan result from the report
+        scan_result = response_report.json().get('positives', 0)
 
-    # Extract the scan result from the report
-    scan_result = response_report.json().get('positives', 0)
+        return scan_result
+    
+    except RequestException as e:
+        # Handle request exceptions, such as network issues or bad responses
+        print(f"Error during API request: {e}")
+        return 0
 
-    return scan_result
-
-# Get URL input from the user
-#url_to_check = input('Enter the URL you want to scan: ')
-
-# Scan the URL and print the result
-#positives = scan_url(api_key, url_to_check)
-#if positives > 0:
-#    print(f'The URL "{url_to_check}" is potentially malicious with {positives} positive detections.')
-#else:
-#    print(f'The URL "{url_to_check}" is likely safe.')
 
 if __name__ == '__main__':
     app.run(debug=True)

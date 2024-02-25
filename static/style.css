@@ -89,3 +89,20 @@ footer{
     bottom: 10px;    
     left: 80%;
 }
+
+#result-container {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #1c27a5;
+    border: 1px solid #cccccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+#result-content {
+    color: aqua;
+}
