@@ -51,12 +51,20 @@
     });
     const data = await response.json();
     const positives_count = data['positive detections for the scanned URL'];
-  
-    if(positives_count > 0)
+    if(positives_count == -1){
+        Swal.fire({ title: "Error!",
+        text: "An error has occured, try again",
+        icon: "error"
+        });
+        swal("safe!", "you can browse safley", "success");
+    }
+    
+    else if(positives_count > 0)
         Swal.fire({ title: "mallicious!",
         text: "do not use this URL!",
         icon: "warning"
         });
+   
     else 
         Swal.fire({ title: "safe!",
         text: "you can browse safley!",

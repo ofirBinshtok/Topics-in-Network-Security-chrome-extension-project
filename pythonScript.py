@@ -43,7 +43,7 @@ def scan_url(api_key, url):
     except RequestException as e:
         # Handle request exceptions, such as network issues or bad responses
         print(f"Error during API request: {e}")
-        return 0
+        return -1
 
 
 if __name__ == '__main__':
