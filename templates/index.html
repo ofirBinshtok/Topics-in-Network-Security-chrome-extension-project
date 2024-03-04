@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Shadows+Into+Light&family=Titan+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
      <!-- Include SweetAlert2 CSS -->
      <link rel="stylesheet" href="{{ url_for('static', filename='sweetalert2.min.css') }}">
 
@@ -23,9 +25,8 @@
     </div>
     <!--<form> element is used to create an HTML form that allows users to input data -->
     <form action="/check_phishing" method="post" class="text-box">
-        <input type="text" placeholder="Enter URL" name="url" required>
-       <!--<button type="submit">Check Now!</button> --> 
-       <button onclick="myFunction()">Try it</button>
+        <input type="text" placeholder="Enter URL" name="url" required> 
+       <button onclick="myFunction()">Check Now!</button>
     </form>
 
     <p id="result"></p>
@@ -41,6 +42,17 @@
     function myFunction() {
     document.querySelector('form').addEventListener('submit', async function(event){
     event.preventDefault();
+    
+         // Display loading spinner before making the fetch request
+        Swal.fire({
+        title: 'Loading...',
+        allowOutsideClick: false,
+        background: '#404040', // Light gray background
+        onBeforeOpen: async () => {
+            Swal.showLoading();
+        }
+        });
+
     const url = document.querySelector('input[name="url"]').value;
     const response = await fetch('/check_phishing', {
         method: 'POST',
@@ -49,32 +61,42 @@
         },
         body:`url=${encodeURIComponent(url)}`,
     });
+    Swal.close();
+
     const data = await response.json();
     const positives_count = data['positive detections for the scanned URL'];
     if(positives_count == -1){
         Swal.fire({ title: "Error!",
-        text: "An error has occured, try again",
+        text: "invalid URL, try again",
         icon: "error"
         });
-        swal("safe!", "you can browse safley", "success");
+        document.querySelector('input[name="url"]').value = '';
+    }
+    else if(positives_count == -2){
+        Swal.fire({ title: "Error!",
+        text: "HTTP error",
+        icon: "error"
+        });
+        document.querySelector('input[name="url"]').value = '';
     }
     
-    else if(positives_count > 0)
+    else if(positives_count == 1){
         Swal.fire({ title: "mallicious!",
         text: "do not use this URL!",
         icon: "warning"
         });
-   
-    else 
+        document.querySelector('input[name="url"]').value = '';
+   }
+    else {
         Swal.fire({ title: "safe!",
         text: "you can browse safley!",
         icon: "success"
         });
-        swal("safe!", "you can browse safley", "success");
+        document.querySelector('input[name="url"]').value = '';
+    } 
     });
- 
+    
     }
     </script>
-  <!--document.getElementById('result').innerHTML = `Number of positives: ${positives_count}`;-->
 </body>
 </html>

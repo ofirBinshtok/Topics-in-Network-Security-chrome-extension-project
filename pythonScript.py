@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 from requests.exceptions import RequestException
+from urllib.parse import urlparse
 
 api_key = '2d4bdbc3b275e3c5d709a00fbdae114851cf26e8a48ea073e71d8c170ac2a27e'
 
@@ -17,33 +18,47 @@ def check_phishing():
     positives_count =  scan_url(api_key, url)
     return jsonify({'positive detections for the scanned URL': positives_count}) #return the result as a JSON 
 
-def scan_url(api_key, url):
-    url_scan_endpoint = 'https://www.virustotal.com/vtapi/v2/url/scan'
-    url_report_endpoint = 'https://www.virustotal.com/vtapi/v2/url/report'
+# def is_valid(url):
+#     try:
+#         result = urlparse(url)
+#         return all([result.scheme, result.netloc])
+#     except ValueError:
+#         return False
+def is_valid(url):
     try:
-        # Step 1: Submit URL for scanning
-        params_scan = {'apikey': api_key, 'url': url}
-        response_scan = requests.post(url_scan_endpoint, params=params_scan)
-        response_scan.raise_for_status()  # Raise an HTTPError for bad responses
-
-        # Get the scan result and resource for further report retrieval
-        scan_result = response_scan.json()
-        resource = scan_result.get('scan_id', '')
-
-        # Step 2: Retrieve the scan report
-        params_report = {'apikey': api_key, 'resource': resource}
-        response_report = requests.get(url_report_endpoint, params=params_report)
-        response_report.raise_for_status()  # Raise an HTTPError for bad responses
-
-        # Extract the scan result from the report
-        scan_result = response_report.json().get('positives', 0)
-
-        return scan_result
+        response = requests.head(url)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
     
-    except RequestException as e:
-        # Handle request exceptions, such as network issues or bad responses
-        print(f"Error during API request: {e}")
-        return -1
+def scan_url(api_key, url):
+    api_url = "https://www.virustotal.com/api/v3/urls"
+
+    payload = { "url": url}
+    headers = {
+        "accept": "application/json",
+        "x-apikey":api_key,
+        "content-type": "application/x-www-form-urlencoded"
+    }
+   
+    try:
+        response = requests.post(api_url, data=payload, headers=headers)
+        data = response.json()
+        id = data.get('data', {}).get('id', {})
+        url_analysis = f'https://www.virustotal.com/api/v3/analyses/{id}'
+        report= requests.get(url_analysis, headers=headers)
+        stat = (report.json()).get('data', {}).get('attributes', {}).get('stats', {})
+        malicious_count = stat.get('malicious', 0)
+        print("malicious = ",malicious_count)
+        if malicious_count>0:
+            return 1
+        else:   
+            return 0
+    except requests.exceptions.HTTPError as err:
+        print(f"HTTP Error: {err}")
+        print(response.text)
+        return -2
+   
 
 
 if __name__ == '__main__':
