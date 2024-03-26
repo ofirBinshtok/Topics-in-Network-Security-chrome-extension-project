@@ -1,0 +1,223 @@
+  @font-face {
+    font-family: 'Akira';
+    src: url('static/Akira Expanded Demo.otf') format('opentype'); 
+  }
+
+  @font-face {
+    font-family: 'Zeniq';
+    src: url('static/Zeniq.otf') format('opentype');
+     }
+
+  h1{
+    font-family: 'Zeniq', sans-serif;
+    font-size: 83px;
+    text-align: center;
+    margin-bottom: 0%;
+    color: #66FCF1;
+    line-height: 1.5;
+}
+
+h1.glow {
+    text-shadow: 0 0 4px #3498db, 0 0 6px #3498db, 0 0 8px #66FCF1;
+  }
+
+h2{
+    font-family: 'Akira', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 0%;
+    color: #dee2e7;
+    font-weight: 100;
+}
+
+.headline{
+    padding-top: 10px;
+    float: left;
+}
+
+.text-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #4c5781;
+    height: 90px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 90%;
+    border: 1px ;
+    box-shadow: 5px 5px 10px;
+    border-radius: 15px;
+}
+    
+input{
+    position: relative;
+    cursor: text;
+    text-align: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 450;   
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 20px;
+    padding: 0 8px;
+    height: 30px;
+    width: 90%;
+    background-color: #fff;
+    border: 1px solid #d6d6e7;
+    border-radius: 3px;
+    color: rgb(35, 38, 59);
+    box-shadow: inset 0 1px 4px 0 rgb(119 122 175 / 30%);
+    overflow: hidden;
+    transition: all 100ms ease-in-out;
+    :focus {
+        border-color: #3c4fe0;
+        box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
+    }
+}
+
+#background-box{
+    color: white;
+    width: 50%;
+    height: 25%; 
+}
+
+body {
+    height: 600px; 
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Bungee', sans-serif;
+    background-color: #1d1145;
+}
+
+footer{
+    color: #dee2e7;
+    font-family: 'Itim', cursive;
+    position: absolute;
+    bottom: 10px;    
+    left: 620px;
+}
+
+.button-82-pushable {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-82-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+.button-82-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(210, 25%, 15%) 0%,
+    hsl(210, 25%, 30%) 8%,
+    hsl(210, 25%, 30%) 92%,
+    hsl(210, 25%, 15%) 100%
+  );
+}
+
+.button-82-front {
+    display: block;
+    position: relative;
+    padding: 3px 6px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: white;
+    font-family: "Bebas Neue", sans-serif;
+    background: hsla(232, 61%, 51%, 0.447);
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+  }
+  
+  @media (min-width: 768px) {
+    .button-82-front {
+      font-size: 15px;
+      padding: 3px 6px;
+    }
+  }
+
+.button-82-pushable:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+  transform: translateY(-6px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+  transform: translateY(4px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+
+html {
+    width: 800px;
+    height: 600px;
+}
+
+/* Media query for screens with a minimum width of 1024px (desktop screens) */
+@media (min-width: 1601px){
+    h2{
+        font-size: 20px;
+    }
+
+    footer{
+        bottom: 10px;    
+        left: 620px;
+    }
+}
